@@ -1,0 +1,81 @@
+// @use 'variables' as *;
+@use 'sass:math';
+
+@mixin holy-albatros($space, $bp) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $gap;
+
+  & > * {
+    flex-grow: 1;
+    flex-basis: calc(calc($bp - 100%) * 999);
+  }
+}
+
+@mixin elipsis-clamp($n: 0) {
+  @if $n != 0 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $n;
+  } @else {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  overflow: hidden;
+}
+
+@mixin gradient-shadow($start-color: hsl(150 100% 50%), $end-color: hsl(190 100% 60%)) {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 1rem;
+    background: linear-gradient(to bottom right, $start-color, $end-color);
+    filter: blur(30px);
+    transform: translateY(15%) scale(0.85);
+  }
+}
+
+// Подключение шрифта
+@mixin font($font_name, $file_name, $weight, $style) {
+  @font-face {
+    font-weight: #{$weight};
+    font-style: #{$style};
+    font-family: $font_name;
+    src: url('../fonts/#{$file_name}.woff2') format('woff2'), url('../fonts/#{$file_name}.woff') format('woff');
+    font-display: swap;
+  }
+}
+
+// Currency
+@mixin currency($sym) {
+  @if $sym == 'baht' {
+    &::after {
+      content: '\00A0\0E3F';
+    }
+  }
+  @if $sym == 'rub' {
+    &::after {
+      content: '\00A0\20BD';
+    }
+  }
+  @if $sym == 'usd' {
+    &::before {
+      content: '\0024';
+    }
+  }
+  @if $sym == 'euro' {
+    &::before {
+      content: '\20AC';
+    }
+  }
+}
+
+// Grids
+@mixin grid-cards($type: fit, $min: 280px, $max: 1fr, $gap) {
+  display: grid;
+  grid-template-columns: repeat(auto-#{$type}, minmax($min, $max));
+  gap: var($gap, var(--space));
+}

@@ -1,0 +1,19 @@
+@use '../abstracts/variables' as *;
+
+.#{$prefix}-layout-single-column {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  max-width: $container-max-width;
+  min-height: 100vh;
+  margin: 0 auto;
+
+  [data-grid-area='header'],
+  [data-grid-area='main'],
+  [data-grid-area='footer'] {
+    padding: $spacing-16;
+  }
+
+  article {
+    max-width: $max-line-length;
+  }
+}

@@ -1,0 +1,31 @@
+@use 'sass:meta';
+
+@mixin scss-vars-into-css-props($map, $prefix: '', $key: '') {
+  @each $name, $value in $map {
+    // copy the map key
+    $keyCopy: $key;
+
+    // create name for CSS custom property that contains:
+    // current key + child key from nested map
+    @if $key != '' {
+      $key: #{$key}-#{$name};
+    } @else {
+      $key: #{$name};
+    }
+
+    @if meta.type-of($value) == 'map' {
+      // if value is a map, invoke it once more
+      @include scss-vars-into-css-props($value, $prefix, $key);
+    } @else {
+      @if $prefix {
+        --#{$prefix}#{$key}: #{$value};
+      } @else {
+        #{$key}: #{$value};
+      }
+    }
+
+    // next iteration of loop should go with unchanged key
+    // stylelint-disable-next-line order/order
+    $key: $keyCopy;
+  }
+}

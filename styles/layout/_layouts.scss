@@ -1,0 +1,128 @@
+// =============================================================================
+
+.stack {
+  /* ↓ The flex context */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  & > * {
+    /* ↓ Any extant vertical margins are removed */
+    margin-block: 0;
+  }
+
+  & > * + * {
+    /* ↓ Top margin is only applied to successive elements */
+    margin-block-start: var(--space, 1rem);
+  }
+}
+
+// =============================================================================
+
+.box {
+  --color-light: var(--color-neutral-100);
+  --color-dark: var(--color-neutral-900);
+  --border: var(--border-thin, 0);
+
+  padding: var(--box-padding, var(--space));
+  border: var(--border) solid;
+  background-color: var(--color-light);
+  color: var(--color-dark);
+
+  /* ↓ Always apply the transparent outline, for high contrast mode */
+  outline: var(--border-thin) transparent;
+  outline-offset: calc(var(--border-thin) * -1);
+
+  & * {
+    color: inherit;
+  }
+
+  &.invert {
+    background-color: var(--color-dark);
+
+    /* ↓ Dark becomes light, and light becomes dark */
+    color: var(--color-light);
+  }
+}
+
+// =============================================================================
+
+.center {
+  /* ↓ Remove padding from the width calculation */
+  box-sizing: content-box;
+
+  /* ↓ Only affect horizontal margins */
+  margin-inline: auto;
+
+  /* ↓ Apply the minimum horizontal space */
+  padding-inline-start: var(--space);
+  padding-inline-end: var(--space);
+
+  /* ↓ The maximum width is the maximum measure */
+  max-inline-size: var(--measure);
+}
+
+// =============================================================================
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space, 1rem);
+  align-items: center;
+  justify-content: center;
+
+  > span {
+    line-height: 1.1;
+  }
+}
+
+// =============================================================================
+
+.with-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gutter, var(--space));
+
+  > :first-child {
+    flex-grow: 1;
+    flex-basis: var(--sidebar-width);
+  }
+
+  > :last-child {
+    flex-grow: 999;
+
+    // flex-basis: 70%;
+    min-inline-size: 70%;
+  }
+}
+
+// =============================================================================
+
+.cover {
+  --space: var(--s1);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space);
+
+  /* ↓ Set a minimum height to match the viewport height
+  (any minimum would be fine) */
+  min-block-size: 30vh;
+
+  > * {
+    margin-block: var(--s1);
+  }
+
+  > :first-child:not(h1) {
+    margin-block-start: 0;
+  }
+
+  > :last-child:not(h1) {
+    margin-block-end: 0;
+  }
+
+  > h1 {
+    margin-block: auto;
+  }
+}

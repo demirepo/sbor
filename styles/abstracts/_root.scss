@@ -1,0 +1,80 @@
+@use 'mixins';
+
+// --
+$vars: (
+  'prefix': 'ph',
+  'color': (
+    primary-300: hsl(154 6% 53%),
+    primary-400: hsl(153 5% 37%),
+    secondary-300: hsl(284 28% 87%),
+    secondary-400: hsl(273 38% 54%),
+    secondary-500: hsl(276 53% 32%),
+    neutral-100: hsl(0 0% 100%),
+    neutral-200: hsl(45 24% 90%),
+    neutral-900: hsl(0 0% 0%),
+    gray-200: hsl(200 9% 87%),
+    gray-400: hsl(0 0% 51%),
+    gray-600: hsl(202 10% 37%),
+    gray-800: hsl(0 0% 20%),
+    accent-400: hsl(153 38% 41%),
+    error: #f00,
+    warning: #ff0,
+    success: #0f0,
+  ),
+  'ff': (
+    'primary': "'Open Sans', sans-serif",
+    'secondary': "'Mulish', sans-serif",
+  ),
+  'fw': (
+    300: 300,
+    400: 400,
+    500: 500,
+    600: 600,
+    700: 700,
+  ),
+  'fs': (
+    200: 0.75rem,
+    300: 0.875rem,
+    400: 1rem,
+    500: 1.25rem,
+    600: 1.5rem,
+    800: 2.5rem,
+    900: 4.375rem,
+  ),
+  'spacing': (
+    4: 0.25em,
+    8: 0.5em,
+    16: 1em,
+    24: 1.5em,
+    32: 2em,
+    40: 2.5em,
+    48: 3em,
+    56: 3.5em,
+    64: 4em,
+  ),
+  'border': (
+    'radius': (
+      'xs': 2px,
+      'sm': 4px,
+      'md': 8px,
+      'lg': 16px,
+    ),
+    'width': (
+      'default': 1px,
+      'thick': 2px,
+    ),
+  ),
+  'container': (
+    'padding-sm': 1rem,
+    'padding-md': 2rem,
+    'width': 80rem,
+  ),
+  'viewport': (
+    'min-width': 360px,
+    'max-width': 1280px,
+  ),
+  'sidebar-width': 10rem,
+  'measure': 50ch,
+  'space': 1rem,
+  'line-height': 1.5,
+);

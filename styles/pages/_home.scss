@@ -1,0 +1,29 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ==============================================================================
+
+.sidebar__inner {
+  position: sticky;
+  top: var(--space);
+  align-self: flex-start;
+  width: 100%;
+
+  ol {
+    padding-left: 3rem;
+  }
+}
+
+.cover {
+  position: relative;
+  display: grid;
+
+  > * {
+    grid-template: 1 / 1;
+  }
+
+  > img {
+    inset: 0;
+    object-fit: cover;
+  }
+}

@@ -1,0 +1,49 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.stack > * {
+  margin-block: 0;
+}
+
+.stack > * + * {
+  margin-block-start: var(--stack-space, 1rem);
+}
+
+// =============================================================================
+
+.mt8 > * + * {
+  --stack-space: 0.5rem;
+}
+
+.mt24 > * + * {
+  --stack-space: 1.5rem;
+}
+
+.mt32 > * + * {
+  --stack-space: 2rem;
+}
+
+.mt40 > * + * {
+  --stack-space: 2.5rem;
+}
+
+.mt48 > * + * {
+  --stack-space: 3rem;
+}
+
+.mt56 > * + * {
+  --stack-space: 3.5rem;
+}
+
+.mt64 > * + * {
+  --stack-space: 4rem;
+}
+
+// =============================================================================
+
+.stack.recursive * + * {
+  margin-block-start: var(--stack-space, 1rem);
+}

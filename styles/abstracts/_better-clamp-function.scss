@@ -1,0 +1,34 @@
+@use 'variables' as *;
+@use 'sass:math';
+@use 'functions' as *;
+
+/* Type of arguments: rem, rem, px, px */
+@function better-clamp(
+  $min-size,
+  $max-size,
+  $min-width: $viewport-min-width,
+  $max-width: $viewport-max-width
+) {
+  // source: https://css-tricks.com/linearly-scale-font-size-with-css-clamp-based-on-the-viewport/
+
+  // stripping units
+  $min-size: strip-unit($min-size);
+  $max-size: strip-unit($max-size);
+  $min-width: strip-unit($min-width);
+  $max-width: strip-unit($max-width);
+
+  // convert to rem
+  $min-width: math.div($min-width, 16);
+  $max-width: math.div($max-width, 16);
+
+  // do calculations
+  $slope: math.div(($max-size - $min-size), ($max-width - $min-width));
+  $y-axis-intersection: -$min-width * $slope + $min-size;
+
+  // output as rem
+  @return clamp(
+    #{$min-size}rem,
+    #{$y-axis-intersection}rem + #{$slope * 100}vw,
+    #{$max-size}rem
+  );
+}

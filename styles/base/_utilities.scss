@@ -1,0 +1,71 @@
+@use '../abstracts/variables' as *;
+
+.debug {
+  outline: 1px solid #f00 !important;
+
+  > * {
+    outline: 1px solid #0f0 !important;
+
+    > * {
+      outline: 1px solid #00f !important;
+    }
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+
+.overlay {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    display: block;
+    background-color: var(--color-gray-800);
+    opacity: 0.5;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  > main {
+    flex: 1 1 auto;
+  }
+}
+
+.clearOnFocus {
+  &:focus::placeholder {
+    color: transparent;
+  }
+}
+
+.tac {
+  text-align: center;
+}
+
+.flow-v > * + * {
+  margin-top: var(--flow-space, var(--space));
+}
+
+.flow-h > * + * {
+  margin-left: var(--flow-space, var(--space));
+}
+
+.flow-2x {
+  --flow-space: 2rem;
+}
+
+.flow-3x {
+  --flow-space: 3rem;
+}

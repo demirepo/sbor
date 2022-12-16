@@ -1,0 +1,32 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/better-clamp-function' as *;
+
+h1,
+.h1 {
+  color: var(--color-neutral-900);
+  font-weight: var(--fw-300);
+  font-style: normal;
+  font-size: 2rem;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.1;
+  text-align: center;
+}
+
+h2,
+.h2 {
+  color: var(--color-neutral-900);
+  font-weight: var(--fw-600);
+  font-style: normal;
+  font-size: var(--fs-600);
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.1;
+}
+
+h3,
+.h3 {
+  color: var(--color-neutral-900);
+  font-weight: var(--fw-400);
+  font-style: normal;
+  font-size: var(--fs-500);
+  line-height: 1.1;
+}

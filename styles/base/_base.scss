@@ -1,0 +1,30 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+@use 'sass:math';
+
+body {
+  background-color: var(--color-gray-200);
+  color: var(--color-neutral-900);
+  font-size: var(--fs-400);
+  font-family: var(--ff-primary);
+  line-height: var(--line-height);
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+section {
+  margin-block: calc(var(--space) * 4);
+}
+
+button:focus-visible {
+  outline: 0.25rem solid;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
