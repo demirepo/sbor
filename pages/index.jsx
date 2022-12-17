@@ -1,12 +1,10 @@
 import React from "react";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Map from "../components/Map";
-import connection from "../model/db";
+import pool from "../model/db";
 import SelectWithLabel from "./../components/SelectWithLabel";
 
-export default function Home(props) {
+export default function Home({ tours }) {
   const [ToursAndHotels, setToursAndHotels] = React.useState({});
   const [disableHotelSelect, setDisableHotelSelect] = React.useState(true);
   const [disableRoomInput, setDisableRoomInput] = React.useState(true);
@@ -30,11 +28,7 @@ export default function Home(props) {
               label="Выберите экскурсию из списка"
               name="tour"
               placeholder="Название экскурсии"
-              optionsList={[
-                "Река Квай (3700 бат)",
-                "Река Квай 2 (5500 бат)",
-                "Река Квай + Аюттайя (5500 бат)",
-              ]}
+              optionsList={tours}
               onSelect={onTourSelect}
             />
             <SelectWithLabel
@@ -143,14 +137,21 @@ export default function Home(props) {
 }
 
 export const getStaticProps = async () => {
-  let response;
+  let tours = null;
   try {
-    response = await connection.query("SELECT * from hotels");
+    const response = await pool.query(
+      "SELECT tour_name, sell_price from tours"
+    );
+    if (response) {
+      tours = response.rows.map(
+        (entry) => `${entry.tour_name} (${entry.sell_price})`
+      );
+    }
   } catch (error) {
     console.log("Ошибка получения данных из БД:", error.message);
   }
   return {
-    props: { hotels: response.rows },
+    props: { tours },
     revalidate: 10,
   };
 };

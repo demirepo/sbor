@@ -1,20 +1,12 @@
 import React from "react";
 import Hotels from "./../../components/Hotels";
+import WithSidebar from "./../../layout/WithSidebar";
+import Sidebar from "./../../layout/Sidebar";
 
 export default function Admin() {
   return (
     <>
-      <div className="inner">
-        <div className="container">
-          <Hotels />
-        </div>
-      </div>
-
-      <style jsx>{`
-        .inner {
-          padding-top: 10%;
-        }
-      `}</style>
+      <WithSidebar sidebar={<Sidebar />} />
     </>
   );
 }
