@@ -74,7 +74,7 @@ export default function Dropdown() {
                             return (
                                 <Hint
                                     key={hint.id}
-                                    text={hint.hotel_name}
+                                    text={hint.hotel_title}
                                     tabIndex={0}
                                 />
                             );

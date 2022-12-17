@@ -1,6 +1,8 @@
 import React from 'react';
 import Dropdown from './Dropdown';
 import Spinner from './Spinner';
+import fsModel from '../controllers/FsModel';
+import useSWR from 'swr';
 
 export default function Hotels() {
     const [input, setInput] = React.useState('');
@@ -43,6 +45,12 @@ export default function Hotels() {
             });
     };
 
+    const addHotelsToDBFromFile = async () => {
+        const fileHandle = await fsModel.openFileOrFiles();
+        const file = await fileHandle.getFile();
+        const text = await file.text();
+    };
+
     return (
         <>
             <Dropdown />
@@ -77,6 +85,13 @@ export default function Hotels() {
                     }}
                 >
                     Добавить все отели в базу
+                </button>
+                <button
+                    onClick={() => {
+                        addHotelsToDBFromFile(output);
+                    }}
+                >
+                    Загрузить отели из файла
                 </button>
             </div>
             <div>{output.length}</div>

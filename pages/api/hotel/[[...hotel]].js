@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import hotelsModel from '../../../controllers/HotelsModel';
+import hotelsController from '../../../controllers/hotels.controller';
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         console.log({ hotel });
 
         try {
-            let query = await hotelsModel.getFullNameByPart(hotel);
+            let query = await hotelsController.getFullNameByPart(hotel);
 
             if (query.ok) {
                 res.status(200).json(query);
@@ -26,26 +26,9 @@ export default async function handler(req, res) {
         if (!hotels || hotels.length === 0) {
             res.status(400).json('Не предоставлены данные отеля (отелей)');
         } else {
-            const response = await hotelsModel.addMany(hotels);
+            const response = await hotelsController.addMany(hotels);
             res.status(200).json(response);
         }
-
-        // try {
-        //     const query = await hotels.getIdByFullName(hotel);
-
-        //     if (query.id === -1) {
-        //         const response = await hotels.addOne(hotel);
-        //         if (response.ok) {
-        //             res.status(201).json(response);
-        //         } else {
-        //             res.status(409).json(response);
-        //         }
-        //     } else {
-        //         res.status(409).json('Отель уже существует в базе данных');
-        //     }
-        // } catch (error) {
-        //     res.status(500).json('Ошибка доступа к базе данных: ', error.message);
-        // }
     }
 
     if (req.method === 'PUT') {
@@ -63,9 +46,9 @@ export default async function handler(req, res) {
         }
 
         try {
-            const response = await hotelsModel.removeById(idArray);
+            const response = await hotelsController.removeById(idArray);
             if (response.ok) {
-                res.status(201).json(response);
+                res.status(200).json(response);
             } else {
                 res.status(404).json(response);
             }

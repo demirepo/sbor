@@ -7,7 +7,7 @@ CREATE DATABASE sbor
 
 create TABLE hotels (
     id SERIAL PRIMARY KEY,
-    hotel_name varchar(70),
+    hotel_title varchar(70),
     latitude varchar(12),
     longitude varchar(12),
     iframe text;

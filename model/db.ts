@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool } from 'pg';
 
 // {
 //   user: '',
@@ -9,20 +9,20 @@ import { Pool } from "pg";
 // }
 // вся конфигурация по умолчанию в .env
 
-let connection;
+let pool;
 
-if (!connection) {
-  connection = new Pool({
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    host: process.env.PGHOST,
-    port: Number(process.env.PGPORT) || 5432,
-    database: process.env.PGDATABASE,
-  });
+if (!pool) {
+    pool = new Pool({
+        user: process.env.PGUSER,
+        password: process.env.PGPASSWORD,
+        host: process.env.PGHOST,
+        port: Number(process.env.PGPORT) || 5432,
+        database: process.env.PGDATABASE,
+    });
 }
 
-connection.on("connect", () => {
-  console.log("Установлено соединение с БД");
+pool.on('connect', () => {
+    console.log('Установлено соединение с БД');
 });
 
-export default connection;
+export default pool as InstanceType<typeof Pool>;
