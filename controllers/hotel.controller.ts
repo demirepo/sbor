@@ -1,33 +1,22 @@
-import pool from "../model/db";
-
-interface Hotel {
-  title: string;
-  googleName: string;
-  latitude: string;
-  longitude: string;
-  iframe: string;
-}
+import pool from '../model/db';
+import { Hotel } from '../types';
 
 class HotelsController {
   async getIdByFullName(hotel: string) {
     try {
-      let query = await pool.query(
-        "SELECT id FROM hotels WHERE LOWER(hotel_title) = LOWER($1)",
-        [hotel]
-      );
+      let query = await pool.query('SELECT id FROM hotels WHERE LOWER(hotel_title) = LOWER($1)', [hotel]);
       const id = query?.rows[0]?.id;
       return id ? { ok: true, id } : { ok: true, id: -1 };
     } catch (error) {
-      throw new Error("Ошибка доступа к базе данных");
+      throw new Error('Ошибка доступа к базе данных');
     }
   }
 
   async getFullNameByPart(part: string) {
     try {
-      let query = await pool.query(
-        "SELECT id, hotel_title FROM hotels WHERE LOWER(hotel_title) LIKE LOWER($1)",
-        [`%${part}%`]
-      );
+      let query = await pool.query('SELECT id, hotel_title FROM hotels WHERE LOWER(hotel_title) LIKE LOWER($1)', [
+        `%${part}%`,
+      ]);
 
       let entries = query?.rowCount;
 
@@ -39,33 +28,27 @@ class HotelsController {
           }
         : { ok: false, message: `Совпадений c '${part}' не найдено` };
     } catch (error) {
-      throw new Error("Ошибка доступа к базе данных");
+      throw new Error('Ошибка доступа к базе данных');
     }
   }
 
   async addOneUnique(hotel: Hotel) {
     try {
-      let query = await pool.query(
-        "SELECT id FROM hotels WHERE LOWER(hotel_title) = LOWER($1)",
-        [hotel]
-      );
+      let query = await pool.query('SELECT id FROM hotels WHERE LOWER(hotel_title) = LOWER($1)', [hotel]);
       if (query.rowCount > 0) {
         return {
           ok: false,
           message: `Отель с именем '${hotel.title}' уже существует в базе`,
         };
       } else {
-        let query = await pool.query(
-          "INSERT INTO hotels (hotel_title) VALUES ($1)",
-          [hotel]
-        );
+        let query = await pool.query('INSERT INTO hotels (hotel_title) VALUES ($1)', [hotel]);
 
         return query.rowCount !== 0
           ? { ok: true, message: `Отель '${hotel}' успешно добавлен` }
           : { ok: false, message: `Ошибка при добавлении нового отеля` };
       }
     } catch (error) {
-      throw new Error("Ошибка доступа к базе данных");
+      throw new Error('Ошибка доступа к базе данных');
     }
   }
 
@@ -76,15 +59,13 @@ class HotelsController {
       });
       return Promise.allSettled(promises);
     } catch (error) {
-      throw new Error("Ошибка доступа к базе данных");
+      throw new Error('Ошибка доступа к базе данных');
     }
   }
 
   async removeById(idArray: number[]) {
     try {
-      let query = await pool.query(
-        `DELETE FROM hotels WHERE id IN (${idArray.toString()})`
-      );
+      let query = await pool.query(`DELETE FROM hotels WHERE id IN (${idArray.toString()})`);
 
       return query.rowCount !== 0
         ? { ok: true, message: `Успешное удаление id: '${idArray}'` }
@@ -93,7 +74,7 @@ class HotelsController {
             message: `Ошибка удаления: отель с запрошенным id не найден`,
           };
     } catch (error) {
-      throw new Error("Ошибка доступа к базе данных");
+      throw new Error('Ошибка доступа к базе данных');
     }
   }
 

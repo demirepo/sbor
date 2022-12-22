@@ -1,8 +1,8 @@
-import React from "react";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import pool from "../model/db";
-import SelectWithLabel from "./../components/SelectWithLabel";
+import React from 'react';
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import pool from '../model/db';
+import SelectWithLabel from './../components/SelectWithLabel';
 
 export default function Home({ tours }) {
   const [ToursAndHotels, setToursAndHotels] = React.useState({});
@@ -18,40 +18,46 @@ export default function Home({ tours }) {
     <>
       <Head>
         <title>Время выезда на экскурсии</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          name='viewport'
+          content='initial-scale=1.0, width=device-width'
+        />
       </Head>
 
-      <div className="container">
-        <div className="inner">
-          <form className="form stack" action="">
+      <div className='container'>
+        <div className='inner'>
+          <form
+            className='form stack'
+            action=''
+          >
             <SelectWithLabel
-              label="Выберите экскурсию из списка"
-              name="tour"
-              placeholder="Название экскурсии"
+              label='Выберите экскурсию из списка'
+              name='tour'
+              placeholder='Название экскурсии'
               optionsList={tours}
               onSelect={onTourSelect}
             />
             <SelectWithLabel
-              label="Название отеля"
-              name="hotel"
-              placeholder="Ваш отель"
-              optionsList={["Cosy Beach"]}
+              label='Название отеля'
+              name='hotel'
+              placeholder='Ваш отель'
+              optionsList={['Cosy Beach']}
               disabled={disableHotelSelect}
             />
 
-            <label htmlFor="room">Номер комнаты</label>
+            <label htmlFor='room'>Номер комнаты</label>
             <input
-              type="text"
-              name="room"
-              id="room"
-              placeholder="Tолько цифры"
-              inputMode="numeric"
-              autoComplete="off"
+              type='text'
+              name='room'
+              id='room'
+              placeholder='Tолько цифры'
+              inputMode='numeric'
+              autoComplete='off'
               disabled={disableRoomInput}
-              pattern="\d*"
+              pattern='\d*'
             />
 
-            <button type="submit">Проверить</button>
+            <button type='submit'>Проверить</button>
           </form>
         </div>
       </div>
@@ -80,7 +86,7 @@ export default function Home({ tours }) {
         }
 
         label:nth-of-type(2),
-        button[type="submit"] {
+        button[type='submit'] {
           --space: 2rem;
         }
 
@@ -107,16 +113,11 @@ export default function Home({ tours }) {
           -webkit-padding-start: 2px;
           -moz-padding-start: 2px;
           background-color: #f07575; /* Fallback color if gradients are not supported */
-          background-image: url(../images/select-arrow.png),
-            -webkit-linear-gradient(top, #e5e5e5, #f4f4f4); /* For Chrome and Safari */
-          background-image: url(../images/select-arrow.png),
-            -moz-linear-gradient(top, #e5e5e5, #f4f4f4); /* For old Firefox (3.6 to 15) */
-          background-image: url(../images/select-arrow.png),
-            -ms-linear-gradient(top, #e5e5e5, #f4f4f4); /* For pre-releases of Internet Explorer  10*/
-          background-image: url(../images/select-arrow.png),
-            -o-linear-gradient(top, #e5e5e5, #f4f4f4); /* For old Opera (11.1 to 12.0) */
-          background-image: url(../images/select-arrow.png),
-            linear-gradient(to bottom, #e5e5e5, #f4f4f4); /* Standard syntax; must be last */
+          background-image: url(../images/select-arrow.png), -webkit-linear-gradient(top, #e5e5e5, #f4f4f4); /* For Chrome and Safari */
+          background-image: url(../images/select-arrow.png), -moz-linear-gradient(top, #e5e5e5, #f4f4f4); /* For old Firefox (3.6 to 15) */
+          background-image: url(../images/select-arrow.png), -ms-linear-gradient(top, #e5e5e5, #f4f4f4); /* For pre-releases of Internet Explorer  10*/
+          background-image: url(../images/select-arrow.png), -o-linear-gradient(top, #e5e5e5, #f4f4f4); /* For old Opera (11.1 to 12.0) */
+          background-image: url(../images/select-arrow.png), linear-gradient(to bottom, #e5e5e5, #f4f4f4); /* Standard syntax; must be last */
           background-position: center right;
           background-repeat: no-repeat;
           border: 1px solid #aaa;
@@ -139,19 +140,15 @@ export default function Home({ tours }) {
 export const getStaticProps = async () => {
   let tours = null;
   try {
-    const response = await pool.query(
-      "SELECT tour_name, sell_price from tours"
-    );
-    if (response) {
-      tours = response.rows.map(
-        (entry) => `${entry.tour_name} (${entry.sell_price})`
-      );
+    const query = await pool.query('SELECT tour_name, sell_price from tours');
+    if (query) {
+      tours = query.rows.map((entry) => `${entry.tour_name} (${entry.sell_price})`);
     }
   } catch (error) {
-    console.log("Ошибка получения данных из БД:", error.message);
+    console.log('Ошибка получения данных из БД:', error.message);
   }
   return {
     props: { tours },
-    revalidate: 10,
+    revalidate: 1000,
   };
 };
