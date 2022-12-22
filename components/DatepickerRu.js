@@ -1,21 +1,21 @@
-import React from "react";
-import DatePicker from "react-datepicker";
+import React from 'react';
+import DatePicker from 'react-datepicker';
 
-export default function DatepickerRu() {
-  const days = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+export default function DatepickerRu({ date, setDate }) {
+  const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
   const months = [
-    "Январь",
-    "Февраль",
-    "Март",
-    "Апрель",
-    "Май",
-    "Июнь",
-    "Июль",
-    "Август",
-    "Сентябрь",
-    "Октябрь",
-    "Ноябрь",
-    "Декабрь",
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь',
   ];
 
   const locale = {
@@ -24,24 +24,19 @@ export default function DatepickerRu() {
       month: (n) => months[n],
     },
     formatLong: {
-      date: () => "mm/dd/yyyy",
+      date: () => 'mm/dd/yyyy',
     },
   };
-
-  const [startDate, setStartDate] = React.useState(new Date());
-
-  const onChange = (date) => setStartDate(date);
 
   return (
     <div>
       <DatePicker
-        onChange={onChange}
-        startDate={startDate}
+        onChange={(date) => setDate(date)}
+        startDate={date}
         locale={locale}
         inline
         calendarStartDay={1}
       />
-      <div>{startDate.toDateString()}</div>
     </div>
   );
 }
