@@ -1,8 +1,4 @@
-declare function showOpenFilePicker({
-  multiple,
-}: {
-  multiple: boolean;
-}): Promise<FileSystemFileHandle[]>;
+declare function showOpenFilePicker({ multiple }: { multiple: boolean }): Promise<FileSystemFileHandle[]>;
 
 interface FileSystemFileHandle {
   kind: string;
@@ -16,7 +12,7 @@ class FsModel {
     // Feature detection. The API needs to be supported
     // and the app not run in an iframe.
     const supportsFileSystemAccess =
-      "showOpenFilePicker" in window &&
+      'showOpenFilePicker' in window &&
       (() => {
         try {
           return window.self === window.top;
@@ -31,7 +27,6 @@ class FsModel {
       try {
         // Show the file picker, optionally allowing multiple files.
         fileOrFiles = await showOpenFilePicker({ multiple });
-        console.log(fileOrFiles);
 
         if (!multiple) {
           // Only one file is requested.
@@ -39,7 +34,7 @@ class FsModel {
         }
       } catch (err: any) {
         // Fail silently if the user has simply canceled the dialog.
-        if (err.name !== "AbortError") {
+        if (err.name !== 'AbortError') {
           console.error(err.name, err.message);
         }
       }
@@ -48,15 +43,15 @@ class FsModel {
     // Fallback if the File System Access API is not supported.
     return new Promise((resolve) => {
       // Append a new `<input type="file" multiple? />` and hide it.
-      const input = document.createElement("input");
-      input.style.display = "none";
-      input.type = "file";
+      const input = document.createElement('input');
+      input.style.display = 'none';
+      input.type = 'file';
       document.body.append(input);
       if (multiple) {
         input.multiple = true;
       }
       // The `change` event fires when the user interacts with the dialog.
-      input.addEventListener("change", () => {
+      input.addEventListener('change', () => {
         // Remove the `<input type="file" multiple? />` again from the DOM.
         input.remove();
         // If no files were selected, return.
@@ -67,13 +62,20 @@ class FsModel {
         resolve(multiple ? input.files : input.files[0]);
       });
       // Show the picker.
-      if ("showPicker" in HTMLInputElement.prototype) {
+      if ('showPicker' in HTMLInputElement.prototype) {
         input.showPicker();
       } else {
         input.click();
       }
     });
   }
+
+  // In component:
+  // const addHotelsToDBFromFile = async () => {
+  //   const fileHandle = await fsModel.openFileOrFiles();
+  //   const file = await fileHandle.getFile();
+  //   const text = await file.text();
+  // };
 }
 
 export default new FsModel();
