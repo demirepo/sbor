@@ -6,7 +6,7 @@ import styles from '../styles/components/Modal.module.scss';
 interface ModalProps {
   children?: React.ReactNode;
   title?: string;
-  onClose: () => void;
+  onClose: (e: React.SyntheticEvent) => void;
   show: boolean;
 }
 
@@ -19,9 +19,7 @@ export default function Modal({ children, title, onClose, show }: ModalProps) {
 
   const close = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log('click');
-
-    onClose();
+    onClose(e);
   };
 
   const content = show ? (
@@ -34,6 +32,7 @@ export default function Modal({ children, title, onClose, show }: ModalProps) {
         <header className={styles.modal__header}>
           <h3>{title ? title : ''}</h3>
         </header>
+        <br />
         <main className={styles.modal__body}>{children}</main>
         <button
           className={styles.modal__close}

@@ -4,7 +4,7 @@
 }
 
 .modal__overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 9998;
   background-color: #444;
@@ -12,13 +12,13 @@
 }
 
 .modal__box {
-  position: absolute;
+  position: fixed;
   top: 20%;
   left: 50%;
   z-index: 9999;
   padding: 1rem;
   background-color: #fff;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
 }
 
 // .modal__box::after {
