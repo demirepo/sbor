@@ -10,8 +10,9 @@ create TABLE hotels (
     hotel_title varchar(70),
     latitude varchar(12),
     longitude varchar(12),
+    google_name varchar(255),
+    comment text,
     iframe text;
-    comment varchar(255)
 );
 
 create TABLE tours (

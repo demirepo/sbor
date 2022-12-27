@@ -1,9 +1,16 @@
 export interface Hotel {
+  id: number;
   title: string;
   googleName: string;
   latitude: string;
   longitude: string;
   iframe: string;
+  comment: string;
+}
+
+export interface HotelDB extends Omit<Hotel, 'googleName' | 'title'> {
+  hotel_title: string;
+  google_name: string;
 }
 
 export interface ScheduleParams {
@@ -26,3 +33,26 @@ export interface ToursTableRow {
 }
 
 export type BusType = 'bigbus' | 'minibus';
+
+export interface DialogProps {
+  onConfirm: (e?: React.SyntheticEvent) => void;
+  onCancel: (e?: React.SyntheticEvent) => void;
+}
+export interface HotelEditDialogProps {
+  onConfirm: (hotel: Hotel) => void;
+  onCancel: (e?: React.SyntheticEvent) => void;
+  hotel: Hotel;
+}
+
+export interface ButtonProps {
+  onClick: () => void;
+}
+
+export interface Booking {
+  bookingString: string;
+  bookingStringHotel: string;
+  room: string;
+  pax: number;
+  pickup: string;
+  findings: Hotel[] | undefined;
+}
