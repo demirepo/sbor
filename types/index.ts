@@ -1,5 +1,5 @@
 export interface Hotel {
-  id: number;
+  id: string;
   title: string;
   googleName: string;
   latitude: string;

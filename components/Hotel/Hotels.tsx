@@ -9,13 +9,21 @@ import { Booking, Hotel } from '../../types/index';
 export default function Hotels({ currentDate = new Date() }: { currentDate: Date }) {
   const [input, setInput] = React.useState('');
   const [bookings, setBookings] = React.useState<Booking[]>([]);
-  const [currentHotel, setCurrentHotel] = React.useState({
+  const [dropdownInput, setDropdownInput] = React.useState('');
+
+  const [currentHotel, setCurrentHotel] = React.useState<Hotel>({
+    title: '',
+    comment: '',
+    googleName: '',
+    latitude: '',
+    longitude: '',
+    id: '',
     iframe:
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15554.935291151847!2d100.87462875741559!3d12.924821798825915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3102c090be001f0d%3A0x493d4a0fdaad4fb1!2sBali%20Hai%20Pier!5e0!3m2!1sru!2sru!4v1671739865033!5m2!1sru!2sru',
   });
 
-  const parseHotelInput = (string: string) => {
-    let hotels = string
+  const enrich = async (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+    let bookings = (e.target as HTMLTextAreaElement).value
       .trim()
       .split('\n')
       .filter((el) => el !== '')
@@ -31,10 +39,6 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
         };
       });
 
-    setBookings(hotels);
-  };
-
-  const enrich = async () => {
     const promises = bookings.map(async (hotel: Booking) => {
       const data = await fetch('http://localhost:3000/api/hotel/' + hotel.bookingStringHotel);
       const hotelEntry = await data.json();
@@ -67,16 +71,7 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
       />
 
       <br />
-      <div className='buttons'>
-        <button
-          onClick={() => {
-            parseHotelInput(input);
-          }}
-        >
-          Преобразовать в карточки
-        </button>
-        <button onClick={enrich}>Обогатить данные</button>
-      </div>
+      <div className='buttons'></div>
 
       <div className='container'>
         <textarea
@@ -84,7 +79,7 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
-            parseHotelInput(e.target.value);
+            enrich(e);
           }}
         ></textarea>
 
