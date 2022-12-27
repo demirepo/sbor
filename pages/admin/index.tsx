@@ -3,10 +3,21 @@ import WithSidebar from '../../layout/WithSidebar';
 import Sidebar from '../../layout/Sidebar';
 import { GetStaticProps } from 'next';
 import pool from '../../model/db';
-import { ToursTableRow } from '../../types';
 
 export default function Admin() {
-  return <WithSidebar sidebar={<Sidebar />} />;
+  const [currentDate, setCurrentDate] = React.useState<Date>(() => new Date());
+
+  return (
+    <WithSidebar
+      currentDate={currentDate}
+      sidebar={
+        <Sidebar
+          date={currentDate}
+          setDate={setCurrentDate}
+        />
+      }
+    />
+  );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
