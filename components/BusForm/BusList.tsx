@@ -1,8 +1,8 @@
 import React from 'react';
 import BusCard from './BusCard';
 import useSWR from 'swr';
-import { fetcher } from './../utils/fetcher';
-import Modal from './Modal';
+import { fetcher } from '../../utils/fetcher';
+import Modal from '../Modal';
 
 interface BusListProps {
   date: Date;
@@ -11,7 +11,6 @@ interface BusListProps {
 export default function BusList({ date }: BusListProps) {
   const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`; // YYYY-MM-DD
   const { data, isLoading } = useSWR<any>('http://localhost:3000/api/bus/' + dateString, fetcher);
-  if (data?.data) console.log(data.data);
   const [showModal, setShowModal] = React.useState(false);
 
   const closeModal = () => {
@@ -32,7 +31,7 @@ export default function BusList({ date }: BusListProps) {
         return (
           <BusCard
             key={el.id}
-            tour={el.tour_id}
+            tour={el.tourName}
             date={date}
             type={el.type}
             handleClick={() => setShowModal(true)}

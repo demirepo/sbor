@@ -1,6 +1,6 @@
 import React from 'react';
-import { BusType } from '../types';
-import { busType } from './../utils/busTypes';
+import { BusType } from '../../types';
+import { busType } from '../../utils/busTypes';
 
 interface BusCardProps {
   date: Date;

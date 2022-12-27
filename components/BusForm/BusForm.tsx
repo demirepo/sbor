@@ -1,9 +1,9 @@
 import React, { SyntheticEvent } from 'react';
-import { ToursTableRow } from '../types';
-import { fetcher } from '../utils/fetcher';
+import { ToursTableRow } from '../../types';
+import { fetcher } from '../../utils/fetcher';
 import useSWR from 'swr';
-import notation from '../utils/notation';
-import Spinner from './Spinner';
+import notation from '../../utils/notation';
+import Spinner from '../Spinner';
 
 export default function AddBusForm() {
   const { data, isLoading } = useSWR('http://localhost:3000/api/tour', fetcher);
