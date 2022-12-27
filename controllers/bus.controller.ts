@@ -34,14 +34,23 @@ class BusController {
 
   async getBusIdByDate(date: Date) {
     try {
-      let query = await pool.query('SELECT type, tour_id FROM buses WHERE departure = $1', [date]);
-      const rowCount = query?.rowCount;
+      let query = await pool.query('select id, tour_name, type from buses natural join tours where departure = $1', [
+        date,
+      ]);
+
+      let rowCount;
+      let data;
+
+      if (query) {
+        rowCount = query?.rowCount;
+        data = query.rows?.map((el) => ({ id: el.id, tourName: el.tour_name, type: el.type }));
+      }
 
       return rowCount
         ? {
             ok: true,
             message: `На запланированную дату найдено ${rowCount} автобусов`,
-            data: query.rows,
+            data,
           }
         : { ok: false, message: `На дату ${date} автобусов не запланировано` };
     } catch (error) {
