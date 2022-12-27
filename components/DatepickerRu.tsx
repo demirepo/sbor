@@ -1,7 +1,12 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 
-export default function DatepickerRu({ date, setDate }) {
+interface DatepickerProps {
+  date: Date;
+  setDate: React.Dispatch<React.SetStateAction<Date>>;
+}
+
+export default function DatepickerRu({ date, setDate }: DatepickerProps) {
   const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
   const months = [
     'Январь',
@@ -20,18 +25,18 @@ export default function DatepickerRu({ date, setDate }) {
 
   const locale = {
     localize: {
-      day: (n) => days[n],
-      month: (n) => months[n],
+      day: (n: any) => days[n],
+      month: (n: any) => months[n],
     },
     formatLong: {
       date: () => 'mm/dd/yyyy',
     },
-  };
+  } as Locale;
 
   return (
     <div>
       <DatePicker
-        onChange={(date) => setDate(date)}
+        onChange={(date) => setDate(date || new Date())}
         startDate={date}
         locale={locale}
         inline
