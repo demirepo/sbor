@@ -22,25 +22,25 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15554.935291151847!2d100.87462875741559!3d12.924821798825915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3102c090be001f0d%3A0x493d4a0fdaad4fb1!2sBali%20Hai%20Pier!5e0!3m2!1sru!2sru!4v1671739865033!5m2!1sru!2sru',
   });
 
-  const enrich = async (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+  const parseAndEnrich = async (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
     let bookings = (e.target as HTMLTextAreaElement).value
       .trim()
       .split('\n')
       .filter((el) => el !== '')
       .map((el) => {
-        const entry = el.trim().split('\t');
+        const [hotelTitle = '', room = '', pax = ''] = el.trim().split('\t');
         return {
-          bookingString: el,
-          bookingStringHotel: entry[0],
-          room: entry[1],
-          pax: Number(entry[2]),
+          bookingInput: el,
+          hotelTitle,
+          room,
+          pax: Number(pax),
           pickup: '00:00',
           findings: [],
         };
       });
 
     const promises = bookings.map(async (hotel: Booking) => {
-      const data = await fetch('http://localhost:3000/api/hotel/' + hotel.bookingStringHotel);
+      const data = await fetch('http://localhost:3000/api/hotel/' + hotel.hotelTitle);
       const hotelEntry = await data.json();
 
       return { ...hotel, findings: hotelEntry.data };
@@ -79,22 +79,23 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
-            enrich(e);
+            parseAndEnrich(e);
           }}
         ></textarea>
 
-        <div className='block'>
+        <div className='hotel-items'>
           {bookings.map((el: Booking, index: number) => {
             return (
               <HotelItem
                 key={index}
-                booking={el.bookingString}
-                title={el.bookingStringHotel}
+                bookingInput={el.bookingInput}
+                title={el.hotelTitle}
                 room={el.room}
                 pax={el.pax}
                 pickup={el.pickup}
                 findings={el.findings || []}
                 setCurrentItem={setCurrentHotel}
+                setBookings={setBookings}
               />
             );
           })}
@@ -116,12 +117,8 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
             width: 100%;
           }
 
-          .block {
+          .hotel-items {
             margin-top: 2rem;
-          }
-
-          .block > * + * {
-            margin-top: 1rem;
           }
 
           .buttons {
