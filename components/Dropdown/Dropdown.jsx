@@ -11,9 +11,14 @@ import { fetcher } from './../../utils/fetcher';
 
 // =============================================================================
 
-export default function Dropdown({ currentItem, setCurrentItem }) {
-  const [input, setInput] = React.useState('');
-  const [dropdown, setDropdown] = React.useState(true);
+export default function Dropdown({
+  currentItem,
+  setCurrentItem,
+  dropdownInput,
+  setDropdownInput,
+  dropdown,
+  setDropdown,
+}) {
   const [showDeleteModal, setShowDeleteModal] = React.useState(false);
   const [showEditModal, setShowEditModal] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -22,7 +27,10 @@ export default function Dropdown({ currentItem, setCurrentItem }) {
   const inputRef = React.useRef();
 
   const pathKey = 'http://localhost:3000/api/hotel/';
-  const { data, isLoading, error, controller, mutate } = useSwrPlus(input.length > 1 ? pathKey : null, input);
+  const { data, isLoading, error, controller, mutate } = useSwrPlus(
+    dropdownInput.length > 1 ? pathKey : null,
+    dropdownInput
+  );
 
   let dropdownOptions;
 
@@ -31,11 +39,14 @@ export default function Dropdown({ currentItem, setCurrentItem }) {
   }
 
   // event listners & callbacks
-  const onClickOutside = React.useCallback((e) => {
-    if (!e.target.closest('form')) {
-      setDropdown(false);
-    }
-  }, []);
+  const onClickOutside = React.useCallback(
+    (e) => {
+      if (!e.target.closest('form')) {
+        setDropdown(false);
+      }
+    },
+    [setDropdown]
+  );
 
   // focus sequence logic when navigating with arrow keys
   const onKeydown = React.useCallback(
@@ -91,12 +102,13 @@ export default function Dropdown({ currentItem, setCurrentItem }) {
 
   // fetching
   React.useEffect(() => {
-    input.length > 1 ? setDropdown(true) : setDropdown(false);
+    dropdownInput.length > 1 ? setDropdown(true) : setDropdown(false);
     mutate(pathKey);
-  }, [input, mutate]);
+  }, [dropdownInput, mutate, setDropdown]);
 
   const handleInput = (e) => {
-    setInput(e.target.value);
+    setDropdownInput(e.target.value);
+    // setInput(e.target.value);
   };
 
   const handleOptionClick = async (e) => {
@@ -111,7 +123,7 @@ export default function Dropdown({ currentItem, setCurrentItem }) {
       });
       setCurrentItem(selectedHotel[0]);
     }
-    titleElement && setInput(titleElement.innerText);
+    titleElement && setDropdownInput(titleElement.innerText);
     setDropdown((state) => !state);
   };
 
@@ -170,11 +182,11 @@ export default function Dropdown({ currentItem, setCurrentItem }) {
               autoComplete='off'
               className='form__input'
               type={'text'}
-              value={input}
+              value={dropdownInput}
               onChange={handleInput}
               onFocus={() => {
                 setSelectedIndex(0);
-                setDropdown(input.length > 1);
+                setDropdown(dropdownInput.length > 1);
               }}
             />
           </div>

@@ -4,8 +4,10 @@ import React from 'react';
 import PersonIcon from '../icons/PersonIcon';
 import HotelIcon from './../icons/HotelIcon';
 import RoomIcon from './../icons/RoomIcon';
+import { flushSync } from 'react-dom';
 
 interface HotelItemProps {
+  propId: string;
   bookingInput: string;
   title: string;
   googleName?: string;
@@ -15,6 +17,8 @@ interface HotelItemProps {
   findings: Array<Hotel>;
   setCurrentItem: React.Dispatch<React.SetStateAction<Hotel>>;
   setBookings: React.Dispatch<React.SetStateAction<any[]>>;
+  setDropdownInput: React.Dispatch<React.SetStateAction<string>>;
+  setDropdown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // =============================================================================
@@ -22,6 +26,7 @@ interface HotelItemProps {
 type HotelStatus = 'ok' | 'multiple found' | 'not found' | 'pending';
 
 export default function HotelItem({
+  propId,
   bookingInput,
   title,
   pax,
@@ -30,6 +35,8 @@ export default function HotelItem({
   findings,
   setCurrentItem,
   setBookings,
+  setDropdownInput,
+  setDropdown,
 }: HotelItemProps) {
   let status: HotelStatus = 'pending';
   const isHotelSelectFormShown = findings && findings.length > 1;
@@ -47,6 +54,23 @@ export default function HotelItem({
     setCurrentItemById(id);
   };
 
+  function getIdFromEventTarget(e: React.SyntheticEvent<HTMLInputElement>) {
+    return (e.target as EventTarget & { id: string }).id;
+  }
+
+  async function setCurrentItemById(id: string) {
+    if (id) {
+      const hotel = findings.find((el) => String(el.id) === id);
+      hotel && setCurrentItem(hotel);
+      if (hotel?.title) {
+        flushSync(() => {
+          setDropdownInput(hotel.title);
+        });
+        setDropdown(false);
+      }
+    }
+  }
+
   const handleSelectHotel = (e: React.SyntheticEvent<SubmitEventInit>) => {
     e.preventDefault();
 
@@ -60,25 +84,13 @@ export default function HotelItem({
     });
   };
 
-  function setCurrentItemById(id: string) {
-    if (id) {
-      const hotel = findings.find((el) => String(el.id) === id);
-      hotel && setCurrentItem(hotel);
-    }
-  }
-
-  function getIdFromEventTarget(e: React.SyntheticEvent<HTMLInputElement>) {
-    return (e.target as EventTarget & { id: string }).id;
-  }
-
   function filterFindingsInBookingById(booking: Booking[], id: string) {
     const newBooking = booking.map((el: Booking) => {
       if (el.hotelTitle !== title) return el;
-
-      const newFinding = el?.findings?.find((el: Hotel) => el.id == id);
+      const newFinding = el?.findings?.find((el: Hotel) => String(el.id) === id);
       const newTitle = newFinding?.title;
 
-      return { ...el, hotelTitle: newTitle, findings: [newFinding] };
+      return { ...el, hotelTitle: newTitle, id: el.id, findings: [newFinding] };
     });
     return newBooking;
   }
@@ -96,7 +108,7 @@ export default function HotelItem({
         <div className='hotel-item__hotels'>
           <header>
             <HotelIcon />
-            <h3>{title}</h3>
+            <h3 onClick={() => console.log(propId)}>{title}</h3>
             <RoomIcon />
             <span>{room || 'н/д'}</span>
           </header>
@@ -155,6 +167,10 @@ export default function HotelItem({
           align-items: center;
         }
 
+        .hotel-item__findings {
+          margin-top: 1rem;
+        }
+
         .room-svg,
         .hotel-svg {
           margin-right: 0.5rem;
@@ -181,13 +197,9 @@ export default function HotelItem({
           flex-basis: 10%;
         }
 
-        .button {
+        button {
           padding: 0.1rem 0.5rem;
-        }
-
-        input,
-        label {
-          display: inline;
+          margin-top: 0.5rem;
         }
 
         label {

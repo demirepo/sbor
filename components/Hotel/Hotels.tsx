@@ -10,6 +10,7 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
   const [input, setInput] = React.useState('');
   const [bookings, setBookings] = React.useState<Booking[]>([]);
   const [dropdownInput, setDropdownInput] = React.useState('');
+  const [dropdown, setDropdown] = React.useState(true);
 
   const [currentHotel, setCurrentHotel] = React.useState<Hotel>({
     title: '',
@@ -22,6 +23,21 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15554.935291151847!2d100.87462875741559!3d12.924821798825915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3102c090be001f0d%3A0x493d4a0fdaad4fb1!2sBali%20Hai%20Pier!5e0!3m2!1sru!2sru!4v1671739865033!5m2!1sru!2sru',
   });
 
+  React.useEffect(() => {
+    if (bookings.every((el) => el.findings?.length === 1)) {
+      const sorted = [...bookings].sort((a, b) => {
+        if (a.findings && b.findings) {
+          return a.findings[0]?.latitude.localeCompare(b.findings[0]?.latitude);
+        }
+        return 0;
+      });
+
+      console.log(sorted); //! <-------------------------------- CONSOLE
+    }
+
+    return () => {};
+  }, [bookings]);
+
   const parseAndEnrich = async (e: React.SyntheticEvent<HTMLTextAreaElement>) => {
     let bookings = (e.target as HTMLTextAreaElement).value
       .trim()
@@ -30,6 +46,7 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
       .map((el) => {
         const [hotelTitle = '', room = '', pax = ''] = el.trim().split('\t');
         return {
+          id: '',
           bookingInput: el,
           hotelTitle,
           room,
@@ -68,9 +85,12 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
       <Dropdown
         currentItem={currentHotel}
         setCurrentItem={setCurrentHotel}
+        dropdownInput={dropdownInput}
+        setDropdownInput={setDropdownInput}
+        dropdown={dropdown}
+        setDropdown={setDropdown}
       />
 
-      <br />
       <div className='buttons'></div>
 
       <div className='container'>
@@ -87,7 +107,8 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
           {bookings.map((el: Booking, index: number) => {
             return (
               <HotelItem
-                key={index}
+                propId={el.id}
+                key={el.id || `${el.hotelTitle}${el.room}`}
                 bookingInput={el.bookingInput}
                 title={el.hotelTitle}
                 room={el.room}
@@ -96,6 +117,8 @@ export default function Hotels({ currentDate = new Date() }: { currentDate: Date
                 findings={el.findings || []}
                 setCurrentItem={setCurrentHotel}
                 setBookings={setBookings}
+                setDropdownInput={setDropdownInput}
+                setDropdown={setDropdown}
               />
             );
           })}

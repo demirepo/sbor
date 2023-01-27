@@ -49,6 +49,7 @@ export interface ButtonProps {
 }
 
 export interface Booking {
+  id: string;
   bookingInput: string;
   hotelTitle: string;
   room: string;

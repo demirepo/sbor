@@ -52,7 +52,7 @@ export default function HotelEditDialogContent({ hotel, onCancel, onConfirm }: H
     }
 
     hotelRecord = {
-      id: Number(hotel.id),
+      id: hotel.id,
       title: data.title,
       latitude: latitude?.trim() || '',
       longitude: longitude?.trim() || '',
