@@ -26,7 +26,7 @@ export default function Dropdown({
   const dropdownRef = React.useRef();
   const inputRef = React.useRef();
 
-  const pathKey = 'http://localhost:3000/api/hotel/';
+  const pathKey = '/api/hotel/';
   const { data, isLoading, error, controller, mutate } = useSwrPlus(
     dropdownInput.length > 1 ? pathKey : null,
     dropdownInput

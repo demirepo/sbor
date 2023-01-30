@@ -40,7 +40,7 @@ export default function HotelEditDialogContent({ hotel, onCancel, onConfirm }: H
 
   console.log(errors); //! <-------------------------------- CONSOLE
 
-  const { isLoading, mutate } = useSWR('http://localhost:3000/api/hotel', fetcher);
+  const { isLoading, mutate } = useSWR('/api/hotel', fetcher);
 
   let hotelRecord: Hotel;
 
@@ -60,7 +60,7 @@ export default function HotelEditDialogContent({ hotel, onCancel, onConfirm }: H
       googleName: data.googleName || '',
       iframe: data.iframe || '',
     };
-    await mutate(fetcher('http://localhost:3000/api/hotel', { method: 'PUT', body: JSON.stringify(hotelRecord) }));
+    await mutate(fetcher('/api/hotel', { method: 'PUT', body: JSON.stringify(hotelRecord) }));
 
     onConfirm(hotelRecord);
   };

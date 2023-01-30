@@ -10,7 +10,7 @@ interface BusListProps {
 
 export default function BusList({ date }: BusListProps) {
   const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`; // YYYY-MM-DD
-  const { data, isLoading } = useSWR<any>('http://localhost:3000/api/bus/' + dateString, fetcher);
+  const { data, isLoading } = useSWR<any>('/api/bus/' + dateString, fetcher);
   const [showModal, setShowModal] = React.useState(false);
 
   const closeModal = () => {

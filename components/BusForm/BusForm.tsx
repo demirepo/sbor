@@ -6,7 +6,7 @@ import notation from '../../utils/notation';
 import Spinner from '../Spinner';
 
 export default function AddBusForm() {
-  const { data, isLoading } = useSWR('http://localhost:3000/api/tour', fetcher);
+  const { data, isLoading } = useSWR('/api/tour', fetcher);
 
   let tours;
   if (data) {
